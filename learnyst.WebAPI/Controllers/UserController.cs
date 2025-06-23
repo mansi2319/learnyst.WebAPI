@@ -6,10 +6,10 @@ namespace learnyst.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CoursesController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IGenericRepository<Course> _courseRepo;
-        public CoursesController(IGenericRepository<Course> courseRepo)
+        private readonly IGenericRepository<user> _courseRepo;
+        public UserController(IGenericRepository<user> courseRepo)
         {
             _courseRepo = courseRepo;
         }
@@ -19,7 +19,7 @@ namespace learnyst.WebAPI.Controllers
             Ok(await _courseRepo.ListAllAsync());
 
         [HttpPost]
-        public async Task<IActionResult> Create(Course course)
+        public async Task<IActionResult> Users(user course)
         {
             await _courseRepo.AddAsync(course);
             return Ok(course);

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "learnyst.Core", "..\learnys
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "learnyst.Infrastructure", "..\learnyst.Infrastructure\learnyst.Infrastructure.csproj", "{38EE0E66-212C-4B65-97E1-586709FD0A33}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "learnyst.Application", "..\learnyst.Application\learnyst.Application.csproj", "{8D30546B-CAC1-49CF-99A5-EE0A87B3411C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{38EE0E66-212C-4B65-97E1-586709FD0A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38EE0E66-212C-4B65-97E1-586709FD0A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38EE0E66-212C-4B65-97E1-586709FD0A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D30546B-CAC1-49CF-99A5-EE0A87B3411C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D30546B-CAC1-49CF-99A5-EE0A87B3411C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D30546B-CAC1-49CF-99A5-EE0A87B3411C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D30546B-CAC1-49CF-99A5-EE0A87B3411C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

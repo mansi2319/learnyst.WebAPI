@@ -1,17 +1,20 @@
 using learnyst.Core.Interfaces;
 using learnyst.Infrastructure.Data;
 using learnyst.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add DbContext
+// Register DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), 
+    new MySqlServerVersion(new Version(8, 0, 42))));
+
 
 // Register repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
+//builder.Services.AddScoped<UserService>();
 
 
 builder.Services.AddControllers();
