@@ -1,6 +1,7 @@
 using learnyst.Application.Interfaces;
 using learnyst.Application.Services;
 using learnyst.Core.Interfaces;
+using learnyst.Infrastructure;
 using learnyst.Infrastructure.Data;
 using learnyst.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Cors.Infrastructure;
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 builder.Services.AddScoped(typeof(ICourseService), typeof(CourseService));
 //builder.Services.AddScoped<UserService>();

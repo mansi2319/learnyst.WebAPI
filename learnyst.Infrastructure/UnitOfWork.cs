@@ -1,4 +1,5 @@
 ﻿using learnyst.Core.Entities;
+using learnyst.Core.Interfaces;
 using learnyst.Infrastructure.Data;
 using learnyst.Infrastructure.Repositories;
 using System;
@@ -9,63 +10,20 @@ using System.Threading.Tasks;
 
 namespace learnyst.Infrastructure
 {
-    public class UnitOfWork(AppDbContext context) : IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
-        private readonly AppDbContext _context = context;
+        private readonly AppDbContext _context;
+        private GenericRepository<user>? _userRepository;
 
-        //private AppDbContext context = new AppDbContext();
-        private GenericRepository<user> userRepository;
-        private GenericRepository<course> courseRepository;
-
-        public GenericRepository<user> DepartmentRepository
+        public UnitOfWork(AppDbContext context)
         {
-            get
-            {
-
-                if (this.userRepository == null)
-                {
-                    this.userRepository = new GenericRepository<user>(_context);
-                }
-                return userRepository;
-            }
+            _context = context; 
         }
 
-        public GenericRepository<course> CourseRepository
-        {
-            get
-            {
+        public IGenericRepository<user> Users => _userRepository ??= new GenericRepository<user>(_context);
 
-                if (this.CourseRepository == null)
-                {
-                    this.courseRepository = new GenericRepository<course>(_context);
-                }
-                return courseRepository;
-            }
-        }
+        public async Task<int> CompleteAsync() => await _context.SaveChangesAsync();
 
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public void Dispose() => _context.Dispose();
     }
 }

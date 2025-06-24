@@ -12,56 +12,66 @@ namespace learnyst.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IGenericRepository<user> _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IGenericRepository<user> userRepository)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<UserDto> GetByIdAsync(int id)
         {
-            var user = await _userRepository.GetByIdAsync(id);
+            var user = await _unitOfWork.Users.GetByIdAsync(id);
             if (user == null) return new UserDto();
             return new UserDto
             {
-                id = user.id, 
-                signup_date = user.signup_date,
+                id = user.id,
                 email = user.email,
                 name = user.name,
-                role = user.role?.ToString()
-            }; 
+                role = user.role?.ToString(),
+                signup_date = user.signup_date
+            };
         }
 
         public async Task AddAsync(UserDto userDto)
         {
-            await _userRepository.AddAsync(new user() { id = userDto.id });
+            await _unitOfWork.Users.AddAsync(new user
+            {
+                id = userDto.id,
+                name = userDto.name,
+                email = userDto.email,
+                signup_date = userDto.signup_date,
+                role = userDto.role
+            });
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            await _userRepository.DeleteAsync(id);
+            await _unitOfWork.Users.DeleteAsync(id);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task<List<UserDto>> GetAllAsync()
         {
-            var users = await _userRepository.ListAllAsync();
-            return users.Select(user => new UserDto
+            var users = await _unitOfWork.Users.ListAllAsync();
+            return users.Select(u => new UserDto
             {
-                id = user.id,
-                name = user.name,
+                id = u.id,
+                name = u.name
             }).ToList();
         }
 
         public async Task UpdateAsync(UserDto userDto)
         {
-            await _userRepository.UpdateAsync(new user
+            await _unitOfWork.Users.UpdateAsync(new user
             {
                 id = userDto.id,
-                email = userDto.email,
                 name = userDto.name,
-                role = userDto.role?.ToString()
+                email = userDto.email,
+                role = userDto.role
             });
+            await _unitOfWork.CompleteAsync();
         }
     }
 }
