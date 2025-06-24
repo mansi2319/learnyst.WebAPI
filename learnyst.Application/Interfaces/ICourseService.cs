@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace learnyst.Application.Interfaces
 {
-    public interface IUserService
+    public interface ICourseService
     {
-        public Task<UserDto> GetByIdAsync(int id);
-        public Task<List<UserDto>> GetAllAsync();
-        Task AddAsync(UserDto userDto);
+        public Task<CourseDto> GetByIdAsync(int id);
+        public Task<List<CourseDto>> GetAllAsync();
+        Task AddAsync(CourseDto courseDto);
         Task DeleteAsync(int id);
-        Task UpdateAsync(UserDto userDto);
+        Task UpdateAsync(CourseDto courseDto);
     }
 }

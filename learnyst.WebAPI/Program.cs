@@ -1,6 +1,9 @@
+using learnyst.Application.Interfaces;
+using learnyst.Application.Services;
 using learnyst.Core.Interfaces;
 using learnyst.Infrastructure.Data;
 using learnyst.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -14,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
+builder.Services.AddScoped(typeof(ICourseService), typeof(CourseService));
 //builder.Services.AddScoped<UserService>();
 
 
@@ -26,7 +31,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
+{   
     app.UseSwagger();
     app.UseSwaggerUI();
 }

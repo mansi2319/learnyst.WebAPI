@@ -12,31 +12,56 @@ namespace learnyst.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IGenericRepository<Users> _genericRepository;
+        private readonly IGenericRepository<user> _userRepository;
 
-        public UserService(IGenericRepository<Users> userRepository)
+        public UserService(IGenericRepository<user> userRepository)
         {
-            _genericRepository = userRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<UserDto> GetUserAsync(int id)
+        public async Task<UserDto> GetByIdAsync(int id)
         {
-            var user = await _genericRepository.GetByIdAsync(id);
+            var user = await _userRepository.GetByIdAsync(id);
             if (user == null) return new UserDto();
             return new UserDto
             {
                 id = user.id, 
-                created_at = user.created_at,
+                signup_date = user.signup_date,
                 email = user.email,
                 name = user.name,
                 role = user.role?.ToString()
             }; 
         }
 
-        //public async Task CreateUserAsync(CreateUserDto dto)
-        //{
-        //    var user = new User { Id = Guid.NewGuid(), Name = dto.Name };
-        //    await _genericRepository.AddAsync(user);
-        //}
+        public async Task AddAsync(UserDto userDto)
+        {
+            await _userRepository.AddAsync(new user() { id = userDto.id });
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _userRepository.DeleteAsync(id);
+        }
+
+        public async Task<List<UserDto>> GetAllAsync()
+        {
+            var users = await _userRepository.ListAllAsync();
+            return users.Select(user => new UserDto
+            {
+                id = user.id,
+                name = user.name,
+            }).ToList();
+        }
+
+        public async Task UpdateAsync(UserDto userDto)
+        {
+            await _userRepository.UpdateAsync(new user
+            {
+                id = userDto.id,
+                email = userDto.email,
+                name = userDto.name,
+                role = userDto.role?.ToString()
+            });
+        }
     }
 }

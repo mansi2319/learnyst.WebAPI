@@ -1,6 +1,7 @@
 ﻿using learnyst.Core.Interfaces;
 using learnyst.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 namespace learnyst.Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -14,7 +15,7 @@ namespace learnyst.Infrastructure.Repositories
         public async Task<T?> GetByIdAsync(int id) =>
             await _context.Set<T>().FindAsync(id);
 
-        public async Task<IReadOnlyList<T>> ListAllAsync() =>
+        public async Task<IEnumerable<T>> ListAllAsync() =>
             await _context.Set<T>().ToListAsync();
 
         public async Task<T> AddAsync(T entity)
@@ -30,9 +31,19 @@ namespace learnyst.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task DeleteAsync(int id)
         {
-            _context.Set<T>().Remove(entity);
+            var entityToDelete = _context.Set<T>().FindAsync(id);
+            if (_context.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                _context.Attach(entityToDelete);
+            }
+            _context.Remove(entityToDelete);
+
+
+            //Delete(entityToDelete);
+
+            //_context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
     }
