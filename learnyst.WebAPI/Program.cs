@@ -19,8 +19,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 builder.Services.AddScoped(typeof(ICourseService), typeof(CourseService));
+builder.Services.AddScoped(typeof(IBatchService), typeof(BatchService));
+builder.Services.AddScoped(typeof(IBundleService), typeof(BundleService));
 //builder.Services.AddScoped<UserService>();
 
 

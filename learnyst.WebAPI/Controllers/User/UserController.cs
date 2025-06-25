@@ -2,7 +2,7 @@ using learnyst.Application.DTOs;
 using learnyst.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace learnyst.WebAPI.Controllers
+namespace learnyst.WebAPI.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]/")]
