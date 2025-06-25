@@ -19,6 +19,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register repository
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ILiveKitTokenService, LiveKitTokenService>();
+
 
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 builder.Services.AddScoped(typeof(ICourseService), typeof(CourseService));

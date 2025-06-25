@@ -8,7 +8,7 @@ namespace learnyst.Application.DTOs
 {
     public class BatchDto
     {
-        public int id { get; set; }
+        public int? id { get; set; }
 
         public string? title { get; set; }
 
@@ -25,7 +25,7 @@ namespace learnyst.Application.DTOs
 
     public class BundleDto
     {
-        public int id { get; set; }
+        public int? id { get; set; }
 
         public string? title { get; set; }
 

@@ -26,12 +26,32 @@ namespace learnyst.Application.Services
             return new CourseDto
             {
                 id = user.id, 
+                updated_at = user.updated_at,
+                access_duration = user.access_duration,
+                created_at = user.created_at,
+                description = user.description,
+                instructor_id = user.instructor_id,
+                price = user.price,
+                status = user.status,
+                title = user.title,
+                visibility = user.visibility,
             }; 
         }
 
         public async Task AddAsync(CourseDto courseDto)
         {
-            await _courseRepository.AddAsync(new course() { id = courseDto.id });
+            await _courseRepository
+                .AddAsync(new course() { 
+                     visibility = courseDto.visibility,
+                     title = courseDto.title,
+                     status = courseDto.status,
+                     price = courseDto.price,
+                     instructor_id = courseDto.instructor_id,
+                     description = courseDto.description,
+                     created_at = courseDto.created_at,
+                     access_duration = courseDto.access_duration,
+                     updated_at = courseDto.updated_at,
+                });
         }
 
         public async Task DeleteAsync(int id)
@@ -44,15 +64,37 @@ namespace learnyst.Application.Services
             var courses = await _courseRepository.ListAllAsync();
             return courses.Select(user => new CourseDto
             {
-                id = user.id
+                id = user.id,
+                updated_at = user.updated_at,
+                access_duration = user.access_duration,
+                created_at = user.created_at,
+                description = user.description,
+                instructor_id = user.instructor_id,
+                price = user.price,
+                status = user.status,
+                title = user.title,
+                visibility = user.visibility
             }).ToList();
         }
 
         public async Task UpdateAsync(CourseDto courseDto)
         {
+            if (courseDto.id == null)
+                throw new ArgumentException("Course ID cannot be null for update operation.");
+
             await _courseRepository.UpdateAsync(new course
             {
-                id = courseDto.id
+                id = (int)courseDto.id,
+                visibility = courseDto.visibility,
+                instructor_id = courseDto.instructor_id,
+                price = courseDto.price,
+                title = courseDto.title,
+                status = courseDto.status,
+                description = courseDto.description,
+                updated_at = courseDto.updated_at,
+                access_duration = courseDto.access_duration,
+                created_at = courseDto.created_at,
+                
             });
         }
     }

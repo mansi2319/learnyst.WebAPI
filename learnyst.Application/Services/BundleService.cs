@@ -26,12 +26,26 @@ namespace learnyst.Application.Services
             return new BundleDto
             {
                 id = user.id, 
+                created_at = user.created_at,
+                description = user.description,
+                price = user.price,
+                title = user.title,
+                updated_at = user.updated_at,
+                course_ids = user.course_ids
             }; 
         }
 
         public async Task AddAsync(BundleDto bundleDto)
         {
-            await _bundleRepository.AddAsync(new bundle() { id = bundleDto.id });
+            await _bundleRepository.AddAsync(
+                new bundle() { 
+                    course_ids = bundleDto.course_ids,
+                    created_at = bundleDto.created_at,
+                    description = bundleDto.description,
+                    price = bundleDto.price,
+                    title = bundleDto.title,
+                    updated_at = bundleDto.updated_at,
+                });
         }
 
         public async Task DeleteAsync(int id)
@@ -44,15 +58,30 @@ namespace learnyst.Application.Services
             var courses = await _bundleRepository.ListAllAsync();
             return courses.Select(user => new BundleDto
             {
-                id = user.id
+                id = user.id,
+                created_at = user.created_at,
+                description = user.description,
+                price = user.price,
+                title = user.title,
+                updated_at = user.updated_at,
+                course_ids = user.course_ids
             }).ToList();
         }
 
         public async Task UpdateAsync(BundleDto bundleDto)
         {
+            if (bundleDto.id == null)
+                throw new ArgumentException("Bundle ID cannot be null for update operation.");
+
             await _bundleRepository.UpdateAsync(new bundle
             {
-                id = bundleDto.id
+                id = (int)bundleDto.id,
+                course_ids = bundleDto.course_ids,
+                created_at = bundleDto.created_at,
+                description = bundleDto.description,
+                price = bundleDto.price,
+                title = bundleDto.title,
+                updated_at = bundleDto.updated_at,
             });
         }
     }

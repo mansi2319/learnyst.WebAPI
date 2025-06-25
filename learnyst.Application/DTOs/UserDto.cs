@@ -8,7 +8,7 @@ namespace learnyst.Application.DTOs
 {
     public class UserDto
     {
-        public int id { get; set; }
+        public int? id { get; set; }
 
         public string? name { get; set; }
 
@@ -27,7 +27,7 @@ namespace learnyst.Application.DTOs
         public DateTime? signup_date { get; set; }
 
         public DateTime? updated_at { get; set; }
-    }
+    }   
 
     public class SessionDto
     {
