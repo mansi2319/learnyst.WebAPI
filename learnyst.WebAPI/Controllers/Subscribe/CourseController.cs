@@ -17,17 +17,17 @@ namespace learnyst.WebAPI.Controllers.Subscribe
         }
 
         #region Course
-        [Route("GetCourseById")]
+        [Route("get-course-by-id")]
         [HttpGet]
         public async Task<IActionResult> GetCourseById(int id) =>
             Ok(await _courseService.GetByIdAsync(id));
 
-        [Route("GetAllCourses")]
+        [Route("get-all-course")]
         [HttpGet]
         public async Task<IActionResult> GetAllCourses() =>
             Ok(await _courseService.GetAllAsync());
 
-        [Route("AddCourse")]
+        [Route("add-course")]
         [HttpPost]
         public async Task<IActionResult> AddCourse(CourseDto courseDto)
         {
@@ -35,7 +35,7 @@ namespace learnyst.WebAPI.Controllers.Subscribe
             return Ok(courseDto);
         }
 
-        [Route("UpdateCourse")]
+        [Route("update-course")]
         [HttpPut]
         public async Task<IActionResult> UpdateCourse(CourseDto courseDto)
         {
@@ -43,7 +43,7 @@ namespace learnyst.WebAPI.Controllers.Subscribe
             return Ok(courseDto);
         }
 
-        [Route("DeleteCourse")]
+        [Route("delete-course")]
         [HttpDelete]
         public async Task<IActionResult> DeleteCourse(int id)
         {
