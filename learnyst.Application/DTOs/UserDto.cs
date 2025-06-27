@@ -16,7 +16,7 @@ namespace learnyst.Application.DTOs
 
         public string? mobile_number { get; set; }
 
-        public string? password { get; set; }
+        public required string password { get; set; }
 
         public string? role { get; set; }
 

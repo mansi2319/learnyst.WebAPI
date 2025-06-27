@@ -4,7 +4,10 @@ namespace learnyst.Core.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IGenericRepository<user> Users { get; } 
-        Task<int> CompleteAsync(); 
+        IUserRepository Users { get; }
+        Task<int> CompleteAsync();
+
+        //IGenericRepository<user> Users { get; } 
+        //Task<int> CompleteAsync(); 
     }
 }

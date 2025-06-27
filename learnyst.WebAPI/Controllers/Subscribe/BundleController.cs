@@ -1,7 +1,5 @@
 using learnyst.Application.DTOs;
 using learnyst.Application.Interfaces;
-using learnyst.Core.Entities;
-using learnyst.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learnyst.WebAPI.Controllers.Subscribe

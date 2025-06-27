@@ -26,7 +26,24 @@ namespace learnyst.Infrastructure.Repositories
 
         public async Task UpdateAsync(T entity)
         {
+            // Get the primary key value using reflection (assumes property named "Id" or "id")
+            var keyProperty = typeof(T).GetProperty("Id") ?? typeof(T).GetProperty("id");
+            if (keyProperty == null)
+                throw new InvalidOperationException("No property named 'Id' or 'id' found on type " + typeof(T).Name);
 
+            var idValue = keyProperty.GetValue(entity);
+
+            // Check if already tracked
+            var trackedEntity = _context.ChangeTracker.Entries<T>()
+                .FirstOrDefault(e => keyProperty.GetValue(e.Entity)?.Equals(idValue) == true);
+
+            if (trackedEntity != null)
+            {
+                // Detach the existing tracked instance
+                _context.Entry(trackedEntity.Entity).State = EntityState.Detached;
+            }
+
+            // Attach and update the new entity
             _context.Entry(entity).State = EntityState.Modified;
             //await _context.SaveChangesAsync();
         }
@@ -43,12 +60,6 @@ namespace learnyst.Infrastructure.Repositories
                 _context.Attach(entityToDelete);
             }
             _context.Remove(entityToDelete);
-
-
-            //Delete(entityToDelete);
-
-            //_context.Set<T>().Remove(entity);
-            //await _context.SaveChangesAsync();
         }
     }
 }

@@ -17,6 +17,7 @@ namespace learnyst.Application.Services
             _config = config;
         }
 
+        //TODO:
         public string GenerateToken(string identity, string roomName)
         {
             string apiKey = _config["LiveKit:ApiKey"];

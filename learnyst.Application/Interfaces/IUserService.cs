@@ -10,6 +10,7 @@ namespace learnyst.Application.Interfaces
     public interface IUserService
     {
         public Task<UserDto> GetByIdAsync(int id);
+        public Task<UserDto> GetByEmailAsync(string email);
         public Task<List<UserDto>> GetAllAsync();
         Task AddAsync(UserDto userDto);
         Task DeleteAsync(int id);

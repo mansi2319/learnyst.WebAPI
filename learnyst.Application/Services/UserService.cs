@@ -1,7 +1,9 @@
-﻿using learnyst.Application.DTOs;
+﻿using Google.Protobuf.WellKnownTypes;
+using learnyst.Application.DTOs;
 using learnyst.Application.Interfaces;
 using learnyst.Core.Entities;
 using learnyst.Core.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +15,22 @@ namespace learnyst.Application.Services
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IJwtService _jwtService;
+        private readonly IConfiguration _config;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IJwtService jwtService, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
+            _jwtService = jwtService;
+            _config = config;
         }
 
         public async Task<UserDto> GetByIdAsync(int id)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(id);
-            if (user == null) return new UserDto();
+
+            if (user == null) throw new KeyNotFoundException("User ID cannot be null for update operation."); 
+
             return new UserDto
             {
                 id = user.id,
@@ -32,7 +40,27 @@ namespace learnyst.Application.Services
                 signup_date = user.signup_date,
                 date_of_birth = user.date_of_birth,
                 mobile_number = user.mobile_number,
-                password = user.password,
+                password = user.password ?? "",
+                profile_image_url = user.profile_image_url,
+                updated_at = user.updated_at,
+            };
+        }
+
+        public async Task<UserDto> GetByEmailAsync(string email)
+        {
+            var user = await _unitOfWork.Users.FindByEmailAsync(email);
+            if (user == null) throw new KeyNotFoundException("User ID cannot be null for update operation.");
+
+            return new UserDto
+            {
+                id = user.id,
+                email = user.email,
+                name = user.name,
+                role = user.role?.ToString(),
+                signup_date = user.signup_date,
+                date_of_birth = user.date_of_birth,
+                mobile_number = user.mobile_number,
+                password = user.password ?? "",
                 profile_image_url = user.profile_image_url,
                 updated_at = user.updated_at,
             };
@@ -49,7 +77,7 @@ namespace learnyst.Application.Services
                 updated_at = userDto.updated_at,
                 profile_image_url = userDto.profile_image_url,
                 date_of_birth = userDto.date_of_birth,
-                password = userDto.password,
+                password = _jwtService.HashPassword(userDto.password),
                 mobile_number = userDto.mobile_number,
             });
             await _unitOfWork.CompleteAsync();
@@ -73,7 +101,7 @@ namespace learnyst.Application.Services
                 signup_date = user.signup_date,
                 date_of_birth = user.date_of_birth,
                 mobile_number = user.mobile_number,
-                password = user.password,
+                password = user.password ?? "",
                 profile_image_url = user.profile_image_url,
                 updated_at = user.updated_at,
             }).ToList();
@@ -94,7 +122,7 @@ namespace learnyst.Application.Services
                 updated_at = userDto.updated_at,
                 profile_image_url = userDto.profile_image_url,
                 date_of_birth = userDto.date_of_birth,
-                password = userDto.password,
+                password = _jwtService.HashPassword(userDto.password),
                 mobile_number = userDto.mobile_number,
             });
             await _unitOfWork.CompleteAsync();

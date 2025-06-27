@@ -1,38 +1,37 @@
 using learnyst.Application.DTOs;
 using learnyst.Application.Interfaces;
+using learnyst.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learnyst.WebAPI.Controllers.User
 {
     [ApiController]
     [Route("api/[controller]/")]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IJwtService _jwtService;
+        private readonly IConfiguration _config;
+        public UserController(IUserService userService, IJwtService jwtService, IConfiguration config)
         {
             _userService = userService;
+            _jwtService = jwtService;
+            _config = config;
         }
 
-        [Route("GetUserById")]
+        [Route("get-user-by-id")]
         [HttpGet]
         public async Task<IActionResult> GetUserById(int id) =>
             Ok(await _userService.GetByIdAsync(id));
 
-        [Route("GetAllUsers")]
+        [Route("get-all-users")]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers() =>
             Ok(await _userService.GetAllAsync());
 
-        [Route("AddUsers")]
-        [HttpPost]
-        public async Task<IActionResult> AddUsers(UserDto userDto)
-        {
-            await _userService.AddAsync(userDto);
-            return Ok(userDto);
-        }
-
-        [Route("UpdateUsers")]
+        [Route("update-user")]
         [HttpPut]
         public async Task<IActionResult> UpdateUsers(UserDto userDto)
         {
@@ -40,7 +39,7 @@ namespace learnyst.WebAPI.Controllers.User
             return Ok(userDto);
         }
 
-        [Route("DeleteUsers")]
+        [Route("delete-user")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUsers(int id)
         {
